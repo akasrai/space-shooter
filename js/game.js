@@ -18,7 +18,6 @@
  		this.width 	= props.width;
  		this.height = props.height;
  		this.isBulletFired = false;
- 		this.backgroundMusic = null;
  		this.$parent = props.$parent;
 
  		// CREATING CANVAS
@@ -113,7 +112,7 @@
  	eventHandler(KEY_STATUS, gradient){
 
  		let isHovered = false;
- 		let clickSound = new GameSound("sound/click.mp3");
+
  		// CLICK EVENT ON TEXT OF CANVAS
 		this.$canvas.addEventListener('mousemove', function(event){
 
@@ -225,8 +224,7 @@
  		this.shooter.loadShooter();
  		this.shooter.drawShooter();
  		
- 	// 	this.backgroundMusic = new GameSound("sound/bg.mp3");
-		// this.backgroundMusic.play();
+		backgroundMusic.play();
  	}
 
  	// CREATES ALL THE REQUIRED OBJECTS
@@ -266,15 +264,13 @@
  			ctx		: this.ctx,
  			canvasWidth	: this.width,
  			canvasHeight : this.height,
+ 			speed	: (this.ufoCounter > 20) ? 4 : 2,
+ 			life	: (this.ufoCounter > 20) ? 3 : 2,
  			dx		: dir[Math.floor(Math.random() * dir.length)],
  			dy		: dir[Math.floor(Math.random() * dir.length)],
  			x		: Math.floor(Math.random() * (((this.width/2) + 100) - ((this.width/2) - 200)))  + ((this.width/2) - 200),
  		});
 
- 		// if(!this.isUfoLoaded){
- 			
- 		// 	this.isUfoLoaded = true;
- 		// }
  		this.ufos[this.ufoCounter].loadImages();
  		this.ufos[this.ufoCounter].drawUfo();
  		this.ufoCounter++;
@@ -292,7 +288,6 @@
  			this.restart = true;
  			this.gameOver();
  			return false;
- 			this.backgroundMusic.stop();
  		}
 
  		this.background.drawBackground(this.shooter);
@@ -300,7 +295,7 @@
  		if(this.ufoInterval <= 0){
 
  			this.generateUfos();
- 			this.ufoInterval = 20;
+ 			(this.ufoCounter > 30) ? this.ufoInterval = 10 :this.ufoInterval = 20;
  		}
 
  		if(!this.isBulletFired){
@@ -378,7 +373,7 @@
 
  	// GAME OVER SCREEN
  	gameOver() {
-
+ 		backgroundMusic.stop();
  		let gradient = this.gradientTextColor();	
  		this.homeScreenPattern(this.width/2 - 300, this.height/2 - 150, 600, 400);
 
@@ -395,9 +390,6 @@
 
  	// GAME SCORE PANEL
  	gameScorePanel() {
-
- 		// this.ctx.fillStyle = "rgba(204, 0, 0, 0.7)";
- 		// this.ctx.fillRect(20,20, 400, 150)
 
 		this.ctx.textAlign = "left";
  		this.ctx.fillStyle = "white";

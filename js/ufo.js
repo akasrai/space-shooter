@@ -19,7 +19,7 @@
  		this.y 		= props.y || 100;
  		this.dx 	= props.dx || 0;
  		this.dy 	= props.dy || -1;
- 		this.life 	= props.life || 2;
+ 		this.life 	= props.life || 1;
  		this.type 	= props.type || 1;
  		this.speed 	= props.speed || 2;
  		this.width 	= props.width || 100;
@@ -42,7 +42,7 @@
 
  	// DRAW UFOS
  	drawUfo(){
-
+	// letmein2018
  		if(this.isUfoLoaded){
  			let cache = this;
  			this.ctx.save(); 
@@ -107,11 +107,7 @@
 		this.ctx.drawImage(this.loadedUfos[this.type], this.x + 50, this.y, this.width, this.height);
 		
 		ufos.splice(this, 1);
-
-		// console.log("deleted form ufo");
-	 	
-	 	let explode = new GameSound("sound/explode3.mp3");
-			explode.play();
+	 	explode.play();
 
  		return ufos;
  	};

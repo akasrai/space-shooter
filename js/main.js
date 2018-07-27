@@ -4,6 +4,10 @@
 
 "use strict";
 let xCounter = 0;
+const clickSound = new GameSound("sound/click.mp3");
+const explode = new GameSound("sound/explode3.mp3");
+const destroyedSound = new GameSound("sound/gun.mp3");
+const backgroundMusic = new GameSound("sound/bg.mp3", 0.07);
 
 let KEY_CODES = {
   	32: 'space',
@@ -67,8 +71,8 @@ let $container = document.getElementById("container");
 
 let start = new Game({
 
- 	width	: 1380,
- 	height	: 650,
+ 	width	: window.innerWidth,
+ 	height	: window.innerHeight,
  	$parent	: $container
 });
 

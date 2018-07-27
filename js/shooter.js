@@ -175,19 +175,17 @@
  			width 	: 20,
  			height 	: 20,
  			ctx		: this.ctx,
- 			x		: this.x + (this.width/8) + (this.bendingAngle * 2),
  			y		: this.y - 50,
  			canvasWidth : this.canvasWidth,
- 			canvasHeight : this.canvasHeight
+ 			canvasHeight : this.canvasHeight,
+ 			x		: this.x + (this.width/8) + (this.bendingAngle * 2),
  		});
 
  		this.bullets[this.bulletCount].loadImages();
  		this.bullets[this.bulletCount].fire(this.bendingAngle);
 
  		this.bulletCount ++;
-
- 		let destroyedSound = new GameSound("sound/gun.mp3");
-			destroyedSound.play();
+		destroyedSound.play();
 
  		return true;
  	};
