@@ -50,7 +50,7 @@ class Backgroun3d{
 
 		let halfWidth  = this.width / 2;
 		let halfHeight = this.height / 2;
-
+		
 		this.ctx.fillStyle = "rgb(0,0,0)";
 		this.ctx.fillRect(0, 0, this.width, this.height);
 

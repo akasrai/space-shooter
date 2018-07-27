@@ -11,8 +11,10 @@
  		this.counter= 0;
  		this.fireRate= 5;
  		this.bullets = [];
+ 		this.reScaledY = 0;
  		this.bulletCount = 0;
  		this.bulletAngle = 90;
+ 		this.bendingAngle = 0;
  		this.ctx	= props.ctx;
  		this.$parent= props.$parent;
  		this.x 	 	= props.x || 100;
@@ -31,7 +33,8 @@
  		
  		// SPRITE ANIMATION OF SHOOTER
  		this.totalframes = 5;
- 		this.currentframe = 0;
+ 		// this.totalframes = 79;
+ 		this.currentframe =  1;
  		this.marioTimer = null;
 
 
@@ -43,11 +46,24 @@
  		if(this.shooterLoaded){
 			
 			this.currentframe++; 		  
- 		   	// this.ctx.globalAlpha = 0.5;
+ 		   	
  		   	// this.ctx.drawImage(this.$shooterImage, this.x, this.y, this.width, this.height);
-  
-  			this.ctx.drawImage(this.$shooterImage, this.currentframe*this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height);
-  
+ 		   	let cache = this;
+
+ 		   	this.ctx.save(); 
+  			this.ctx.translate(cache.x, cache.y); //let's translate
+            this.ctx.rotate(Math.PI / 180 * (this.bendingAngle));
+  			this.ctx.drawImage(
+  				this.$shooterImage, 
+  				this.currentframe*this.width, 
+  				0, this.width, 
+  				this.height, 
+  				-cache.x/8+100, 
+  				-cache.y/4+100, 
+  				this.width, 
+  				this.height
+  			);
+  			this.ctx.restore();
   
 			if(this.currentframe >= this.totalframes){
 				
@@ -109,31 +125,30 @@
 				if (this.x <= 0) // Keep player within the screen
 					this.x = 0;
 
-				
-				this.currentframe = this.currentframe -1;
-				
-				if(this.currentframe <= 0)
-					this.currentframe = 0;
-				
-				// this.bulletAngle += 1;
+				if (this.bendingAngle <= 42) this.bendingAngle += 1;
+
+				if(this.x < this.canvasWidth/2 - 60 && this.bendingAngle <= 42 ){
+					this.y-=4;
+					this.reScaledY++;
+				} 
 
 			} else if (KEY_STATUS.right) {
 				this.x += this.speed
 				if (this.x >= this.canvasWidth - this.width)
 					this.x = this.canvasWidth - this.width;
 
-				
-				this.currentframe = this.currentframe +1;
-				
-				if(this.currentframe >= 70)
-					this.currentframe = 70;
+					if(this.bendingAngle >=-39) this.bendingAngle -=1;
 
-				// this.bulletAngle -= 1;
-
+					if(this.x < this.canvasWidth/2 - 60 ) {
+						this.y+=4;
+						this.reScaledY--;
+					}
 			} else if (KEY_STATUS.up) {
 				this.y -= this.speed
 				if (this.y <= this.canvasHeight/4*2.3)
 					this.y = this.canvasHeight/4*2.3;
+
+				this.$shooterImage.height -=2;
 
 			} else if (KEY_STATUS.down) {
 				this.y += this.speed
@@ -155,20 +170,19 @@
  	// CREATE BULLET AND FIRE
  	fireBullet(){
 
- 		// alert("boom");
  		this.bullets[this.bulletCount] = new Bullet({
 
  			width 	: 20,
  			height 	: 20,
  			ctx		: this.ctx,
- 			x		: this.x,
- 			y		: this.y,
+ 			x		: this.x + (this.width/8) + (this.bendingAngle * 2),
+ 			y		: this.y - 50,
  			canvasWidth : this.canvasWidth,
  			canvasHeight : this.canvasHeight
  		});
 
  		this.bullets[this.bulletCount].loadImages();
- 		this.bullets[this.bulletCount].fire(this.bulletAngle);
+ 		this.bullets[this.bulletCount].fire(this.bendingAngle);
 
  		this.bulletCount ++;
 
@@ -192,7 +206,7 @@
 
  			} else {
 
-   		    	bullet.moveBullet(this.bulletAngle);	
+   		    	bullet.moveBullet(this.bendingAngle);	
    		    	newArr.push(bullet);
 			}
 

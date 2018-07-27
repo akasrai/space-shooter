@@ -13,6 +13,7 @@
  		this.ctx = props.ctx;
  		this.loadedUfos = [];
  		this.ufoBullet 	= [];
+ 		this.bendingAngle = 0;
  		this.isUfoLoaded = false;
  		this.x 	 	= props.x || 100;
  		this.y 		= props.y || 100;
@@ -29,6 +30,9 @@
  		if(this.dy === 1) { this.type = Math.floor(Math.random() * (6 - 4)) + 4; }
  		else { this.type = Math.floor(Math.random() * (6 - 0)) + 0; }
 
+ 		if(this.dx === 1) this.bendingAngle = -20;
+ 		if(this.dx === -1) this.bendingAngle = 20;
+ 		
  		if(this.type >= 4)
  			this.point = 2;
  		else
@@ -40,20 +44,12 @@
  	drawUfo(){
 
  		if(this.isUfoLoaded){
-
- 			// if(this.life === 0) 
- 			// 	this.type = Math.floor(Math.random() * (15 - 8)) + 8;
-
- 			// if(this.dx === -1 && this.dy ===-1) { this.ctx.rotate(20 * Math.PI / 180); this.y = 150}
- 			// if(this.dx === -1 && this.dy === -1) { 
-
- 			// 	 this.ctx.rotate(20 * Math.PI / 180);
-
- 			// }
-
- 			this.ctx.drawImage(this.loadedUfos[this.type], this.x + 50, this.y, this.width, this.height);
-
- 			// this.ctx.resetTransform();
+ 			let cache = this;
+ 			this.ctx.save(); 
+  			this.ctx.translate(cache.x, cache.y); 
+            this.ctx.rotate(Math.PI / 180 * (this.bendingAngle));
+ 			this.ctx.drawImage(this.loadedUfos[this.type], -this.x/8+150, -this.y/8+50, this.width, this.height);
+ 			this.ctx.restore();
 
  		}else{
 
@@ -126,8 +122,21 @@
  		this.type = Math.floor(Math.random() * (15 - 9)) + 9;
 
  		this.ctx.drawImage(this.loadedUfos[this.type], this.x + 50, this.y, this.width, this.height);
- 		this.ctx.drawImage(this.loadedUfos[8], shooter.x + 50, shooter.y, shooter.width, shooter.height);
+
+ 		let posX = shooter.x, 
+ 			posY = shooter.y;
+
+
+ 		if(shooter.bendingAngle > 20) {
+ 			posX += 50;
+ 			posY += 60;
+ 			
+ 		} else if(shooter.bendingAngle < -20) {
+ 			posX -= 50;
+ 			posY -= 60;
+ 		}
  		
+ 		this.ctx.drawImage(this.loadedUfos[8], posX, posY, shooter.width, shooter.height);
  		ufos.splice(this, 1);
 
  		let explode = new GameSound("sound/explode1.mp3");

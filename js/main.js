@@ -28,6 +28,7 @@ document.onkeydown = function(e) {
   	let keyCode = (e.keyCode) ? e.keyCode : e.charCode;
 	
 	if (KEY_CODES[keyCode]) {
+		
 		e.preventDefault();
 		KEY_STATUS[KEY_CODES[keyCode]] = true;
 	}

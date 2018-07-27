@@ -57,8 +57,13 @@
  	// FIRES THE BULLET
  	fire(angle){
 
-		this.ctx.drawImage($bulletImage, this.x + angle, this.y-20, this.width, this.height);	
-		
+ 		let cache = this;
+
+ 		this.ctx.save();
+ 		this.ctx.translate(cache.x, cache.y); //let's translate
+        this.ctx.rotate(Math.PI / 180 * (angle));
+		this.ctx.drawImage($bulletImage, -this.x/8 + 170, -this.y/8 + 60, this.width, this.height);	
+		this.ctx.restore();
  	};
 
  	// ANIMATE BULLET
@@ -67,34 +72,16 @@
  		this.width -= 0.6;
  		this.height -= 0.6;
 
- 		// let center = (this.canvasWidth / 2) ;
- 		// let aim  = Math.floor(Math.random() * (center - 590)) + 590;
+ 		let center = (this.canvasWidth / 2) ;
+ 		let aim  = Math.floor(Math.random() * (center - 590)) + 590;
+ 		
+ 		if( angle > 0) this.x += angle /2;
+ 		if( angle < 0) this.x += angle /2;
 
- 		// if(!(this.x > (center - 200) && this.x < (center + 200))){
-
-	 	// 	if( this.x < center){
-
-	 	// 		this.x += 15;
-	 	// 	}
-
-	 	// 	if( this.x > center){
-	 	// 		this.x -= 15;
-	 	// 	}
-	 	// }
-
-	 // 	if (KEY_STATUS.left) {
-			
-	 // 		this.x +=15;
-
-		// } else if (KEY_STATUS.right) {
-			
-		// 	this.x -= 15;
-
-		// } else
 		 if (KEY_STATUS.up) {
 			this.y += 8 ;
 
-		} else if (KEY_STATUS.down) {
+		} else if (KEY_STATUS.left) {
 
 
 		}
@@ -103,8 +90,6 @@
  		this.y += this.dy * this.speed; 
  		this.x += this.dx * this.speed; 
  		
- 		
-
 		if(this.width > 0 && this.height > 0) {
 
 			this.fire(angle);
@@ -119,7 +104,7 @@
 
  		for(let i = 0; i < ufos.length; i++ ) {
 
-			if(ufos[i].x < (this.x + this.width) && (ufos[i].x + ufos[i].width) > this.x){
+			if(ufos[i].x < (this.x + this.width + 40) && (ufos[i].x + ufos[i].width) > this.x + 40){
 
 				if( (ufos[i].y + ufos[i].height) > this.y && ufos[i].y < (this.y + this.height) ){
 					

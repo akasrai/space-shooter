@@ -112,6 +112,8 @@
  	// EVENT HALDLER FUNCTION
  	eventHandler(KEY_STATUS, gradient){
 
+ 		let isHovered = false;
+ 		let clickSound = new GameSound("sound/click.mp3");
  		// CLICK EVENT ON TEXT OF CANVAS
 		this.$canvas.addEventListener('mousemove', function(event){
 
@@ -124,26 +126,45 @@
 					this.ctx.fillStyle = 'white';
 					this.ctx.fillText("Start", this.width/2, this.height/2 + 120);
 					this.$canvas.style.cursor = "pointer";
-				
+
+					if(!isHovered) {
+					
+						clickSound.play();
+						isHovered = true;
+					}	
+
 				}else if( !this.restart && !this.playing){
 
 					this.$canvas.style.cursor = "default";	
 					this.ctx.fillText("Start", this.width/2, this.height/2 + 120);
-					this.ctx.fillStyle = gradient;				
+					this.ctx.fillStyle = gradient;			
+
+					isHovered = false;	
 				
 				} else if( this.restart && ( x > this.width/2 - 140 && x < this.width/2 + 140 ) && 
 					(y > this.height/2 +40 && y < this.height/2 + 100)){
 
 					this.$canvas.style.cursor = "pointer";	
 					this.ctx.fillText("Restart", this.width/2, this.height/2 + 100);
-					this.ctx.fillStyle = "white";				
+					this.ctx.fillStyle = "white";
+
+					if(!isHovered) {
+						clickSound.play();
+						isHovered = true;
+					}	
 				
 				} else if( this.restart && ( x > this.width/2 - 140 && x < this.width/2 + 140 ) && 
 					(y > this.height/2 +120 && y < this.height/2 + 170)){
 
 					this.$canvas.style.cursor = "pointer";	
 					this.ctx.fillText("Quit", this.width/2, this.height/2 + 170);
-					this.ctx.fillStyle = "white";				
+					this.ctx.fillStyle = "white";	
+
+					if(!isHovered) {
+						
+						clickSound.play();
+						isHovered = true;
+					}				
 				
 				} else if(this.restart) {
 
@@ -152,17 +173,18 @@
 					this.ctx.fillText("Quit", this.width/2, this.height/2 + 170);
 					this.ctx.fillStyle = gradient;	
 
+					isHovered = false;
+
 				} else {
 
 					this.$canvas.style.cursor = "default";	
-				}
 
-				
+				}
 
 		}.bind(this));
 
 		this.$canvas.addEventListener('click', function(event){
-
+			
 			let x = event.pageX,
   				y = event.pageY;
 
@@ -222,7 +244,7 @@
 
  			width	: 200,
  			height	: 110,
- 			x		: this.width/2 - 60,
+ 			x		: this.width/2 - 80,
  			y		: 500,
  			ctx		: this.ctx,
  			$parent	: this.$parent,
@@ -333,7 +355,7 @@
 		    	
 			} else if (ufo.x + 100 < (this.shooter.x + this.shooter.width) && (ufo.x + ufo.width) > this.shooter.x) {
 
-				if( (ufo.y + ufo.height) > this.shooter.y + 30 && ufo.y + 100 < (this.shooter.y + this.shooter.height) ){
+				if( (ufo.y + ufo.height) > this.shooter.y && ufo.y < (this.shooter.y + this.shooter.height) ){
 		    		
 		    		this.playing = ufo.destroyUfosAndShooter(this.ufos, this.shooter);
 
