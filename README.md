@@ -11,3 +11,6 @@ Space shooter is a simple UFO shooting game develpoed with javascript.
 
 
 Find demo at https://akasrai.github.io/space-shooter
+
+***
+Created with Javascript
